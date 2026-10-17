@@ -22,8 +22,8 @@ const TextCleaner = (function () {
 
   // Legal and confidentiality disclaimers
   const DISCLAIMER_REGEXES = [
-    /(?:confidentiality\s+notice|disclaimer|notice\s+of\s+confidentiality|privileged\/confidential)[\s\S]*?(?:delete\s+(?:it|this|immediately)|unauthorized|strictly\s+prohibited|destroy|recipient)/gi,
-    /(?:this\s+(?:e[-]?mail|message)\s+(?:and\s+any\s+attachments\s+)?is\s+intended\s+(?:only|solely)\s+for\s+the\s+use\s+of)[\s\S]*?(?:delete|destroy|notify|strictly\s+prohibited)/gi,
+    /(?:confidentiality\s+notice|disclaimer|notice\s+of\s+confidentiality|privileged[\s\/]+confidential)[\s\S]*?(?=(?:\r?\n\s*\r?\n|$))/gi,
+    /(?:this\s+(?:e[-]?mail|message)\s+(?:and\s+any\s+attachments\s+)?is\s+intended\s+(?:only|solely)\s+for\s+the\s+use\s+of)[\s\S]*?(?=(?:\r?\n\s*\r?\n|$))/gi,
     /please\s+consider\s+the\s+environment\s+before\s+printing\s+this\s+email\.?/gi,
     /(?:caution:\s*)?this\s+email\s+originated\s+from\s+outside\s+(?:of\s+)?the\s+organization\.?/gi,
     /(?:click\s+here\s+to\s+unsubscribe|unsubscribe\s*\|\s*update\s+(?:your\s+)?preferences)[^\r\n]*/gi
@@ -142,13 +142,24 @@ const TextCleaner = (function () {
     text = cleanedLines.join('\n');
 
     // 7. Check for sign-off signatures at the end of the text
-    // Only strip if substantial content precedes it
-    if (SIGN_OFF_REGEX.test(text)) {
-      const match = text.match(SIGN_OFF_REGEX);
-      const preText = text.slice(0, match.index).trim();
-      if (preText.length > 20) {
-        text = preText;
-        removedArtifacts.push('Sign-off signature');
+    // Strict safeguard: Inspect lines following the sign-off to ensure they are genuinely
+    // sender contact details (name, title, phone, email) and NOT ticket facts or policy conditions.
+    const signOffMatch = text.match(/(?:\r?\n|^)\s*(?:thanks\s*(?:&|and)\s*regards|best\s*regards|kind\s*regards|warm\s*regards|with\s*regards|regards|sincerely|cheers|thanks\s+in\s+advance|thank\s*you)[,\s]*\r?\n([\s\S]*)$/i);
+    if (signOffMatch) {
+      const trailingBlock = signOffMatch[1].trim();
+      const preText = text.slice(0, signOffMatch.index).trim();
+
+      if (preText.length > 15) {
+        const trailingLines = trailingBlock.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        // A genuine signature block has 1 to 5 short lines (Name, Role, Company, Phone/Email)
+        // If trailing lines contain questions (?), sentence periods, or policy keywords, PRESERVE IT!
+        const PROBLEM_KEYWORDS = /\b(ticket|error|issue|problem|fail|cannot|unable|exception|contractor|approved|requires?|manager|policy|refund|delay|replace|cancel|account|password|access|login|vpn)\b/i;
+        const containsProblemFacts = trailingLines.some(l => PROBLEM_KEYWORDS.test(l) || l.includes('?') || l.length > 80);
+
+        if (!containsProblemFacts && trailingLines.length <= 5) {
+          text = preText;
+          removedArtifacts.push('Sign-off signature');
+        }
       }
     }
 

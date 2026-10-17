@@ -138,6 +138,8 @@
   const reviewSourceBadge = document.getElementById('review-source-badge');
   const reviewTicketId = document.getElementById('review-ticket-id');
   const reviewCleanedBadge = document.getElementById('review-cleaned-badge');
+  const btnToggleOriginalText = document.getElementById('btn-toggle-original-text');
+  let showingRawInReview = false;
   const reviewTicketTitle = document.getElementById('review-ticket-title');
   const reviewTicketBody = document.getElementById('review-ticket-body');
   const reviewMetrics = document.getElementById('review-metrics');
@@ -581,9 +583,11 @@
             ticketId: (title.match(/#\d+|INC-\d+/i) || desc.match(/#\d+|INC-\d+/i) || [])[0] || null,
             title: title || 'Customer Problem Description',
             description: desc,
+            rawEvidence: rawDesc,
             provenance: { title: 'user_input', description: 'user_input' }
           })
-        : { title: title || 'Customer Problem Description', description: desc, source: 'manual_description' };
+        : { title: title || 'Customer Problem Description', description: desc, rawEvidence: rawDesc, source: 'manual_description' };
+      currentTicket.rawEvidence = rawDesc;
       currentTicket.wasCleaned = wasCleaned;
       currentTicket.cleanedArtifacts = artifactsRemoved;
       return true;
@@ -616,11 +620,13 @@
             ticketId: inferredId,
             title: inferredId ? `Conversation Ticket #${inferredId}` : 'Support Conversation',
             description: text,
+            rawEvidence: rawText,
             conversation: parsedConv,
             provenance: { conversation: 'user_pasted_transcript' },
             retrievalStatus: { status: 'MANUAL', platform: 'conversation' }
           })
-        : { title: inferredId ? `Conversation Ticket #${inferredId}` : 'Support Conversation', description: text, source: 'conversation_paste' };
+        : { title: inferredId ? `Conversation Ticket #${inferredId}` : 'Support Conversation', description: text, rawEvidence: rawText, source: 'conversation_paste' };
+      currentTicket.rawEvidence = rawText;
       currentTicket.wasCleaned = wasCleaned;
       currentTicket.cleanedArtifacts = artifactsRemoved;
       return true;
@@ -735,9 +741,32 @@
         reviewCleanedBadge.style.display = 'none';
       }
     }
+    showingRawInReview = false;
+    if (btnToggleOriginalText) {
+      if (currentTicket && currentTicket.wasCleaned && currentTicket.rawEvidence && currentTicket.rawEvidence !== currentTicket.description) {
+        btnToggleOriginalText.style.display = 'inline-block';
+        btnToggleOriginalText.textContent = 'View original raw text';
+      } else {
+        btnToggleOriginalText.style.display = 'none';
+      }
+    }
     if (btnReviewAnalyze) {
       btnReviewAnalyze.disabled = (desc.length === 0);
     }
+  }
+
+  if (btnToggleOriginalText) {
+    btnToggleOriginalText.addEventListener('click', () => {
+      if (!currentTicket) return;
+      showingRawInReview = !showingRawInReview;
+      if (showingRawInReview) {
+        if (reviewTicketBody) reviewTicketBody.textContent = currentTicket.rawEvidence || currentTicket.description;
+        btnToggleOriginalText.textContent = 'View cleaned text';
+      } else {
+        if (reviewTicketBody) reviewTicketBody.textContent = currentTicket.description;
+        btnToggleOriginalText.textContent = 'View original raw text';
+      }
+    });
   }
 
   if (btnReviewBack) {
@@ -1831,14 +1860,6 @@
     }, 50);
   }
 
-  function runAnalysis() {
-    executeAnalysis();
-  }
-
-  if (btnAnalyze) {
-    btnAnalyze.addEventListener('click', runAnalysis);
-  }
-
   // Source Viewer Modal Handlers
   function openSourceViewer(opts) {
     if (!sourceViewerModal) return;
@@ -2273,9 +2294,15 @@
     const btnCopyRes = document.getElementById('btn-copy-res');
     if (btnCopyRes && top.resolution) {
       btnCopyRes.addEventListener('click', () => {
-        navigator.clipboard.writeText(top.resolution).then(() => {
-          showToast('Resolution copied to clipboard');
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(top.resolution).then(() => {
+            showToast('Resolution copied to clipboard');
+          }).catch(() => {
+            showToast('Could not access clipboard');
+          });
+        } else {
+          showToast('Clipboard API not available');
+        }
       });
     }
 
@@ -2299,9 +2326,15 @@ ${resText}
 
 SOURCE EVIDENCE:
 ${top.evidence}`;
-        navigator.clipboard.writeText(text).then(() => {
-          showToast('Complete analysis copied to clipboard');
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => {
+            showToast('Complete analysis copied to clipboard');
+          }).catch(() => {
+            showToast('Could not access clipboard');
+          });
+        } else {
+          showToast('Clipboard API not available');
+        }
       });
     }
 
