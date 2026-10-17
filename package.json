@@ -4,6 +4,7 @@
   "description": "Support policy prototype",
   "scripts": {
     "start": "node server.js",
+    "build": "node -e \"console.log('Build ready')\"",
     "ml:serve": "python ml/policy_ml.py --serve",
     "test": "node tests/matcher.test.js && node tests/docx-parser.test.js",
     "test:portal": "node tests/portal.test.js"

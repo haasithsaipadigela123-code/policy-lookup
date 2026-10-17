@@ -1,11 +1,6 @@
 {
-  "version": 2,
+  "outputDirectory": "app",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/css/(.*)", "destination": "/app/css/$1" },
-    { "source": "/js/(.*)", "destination": "/app/js/$1" },
-    { "source": "/lib/(.*)", "destination": "/app/lib/$1" },
-    { "source": "/", "destination": "/app/index.html" },
-    { "source": "/(.*)", "destination": "/app/$1" }
+    { "source": "/api/(.*)", "destination": "/api/index.js" }
   ]
 }
