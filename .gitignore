@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+package-lock.json.bak
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment and IDE
+.env
+.env.local
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Agent and Scratch
+scratch/
+.tempmediaStorage/
+.gemini/
+
+# Build and Vercel
+.vercel
+dist/
+build/

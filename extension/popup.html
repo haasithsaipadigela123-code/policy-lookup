@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="popup-container">
+
+    <!-- Active Ticket Bar (When ticket detected) -->
+    <div id="ticket-context-bar" class="ticket-bar hidden">
+      <div class="ticket-info">
+        <div class="ticket-header-line">
+          <span class="ticket-id" id="display-ticket-id">TICKET</span>
+          <span class="ticket-title" id="display-ticket-title">Ticket Subject</span>
+        </div>
+      </div>
+      <button id="btn-refresh" class="btn-refresh" title="Re-scan Active Tab" aria-label="Refresh">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M23 4v6h-6"></path>
+          <path d="M1 20v-6h6"></path>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="content-body">
+
+      <!-- 1. Loading View -->
+      <div id="view-loading" class="state-view">
+        <div class="spinner"></div>
+        <p class="state-text">Reading ticket from page...</p>
+      </div>
+
+      <!-- 2. Match Found View -->
+      <div id="view-match" class="state-view hidden">
+
+        <!-- Ambiguity Warning -->
+        <div id="ambiguity-banner" class="ambiguity-box hidden">
+          <strong>Ambiguous Match:</strong>
+          <span id="ambiguity-text">Multiple policies match with close relevance.</span>
+        </div>
+
+        <!-- Exception Notice -->
+        <div id="exception-banner" class="exception-box hidden">
+          <strong>Exception Triggered:</strong>
+          <span id="exception-text"></span>
+        </div>
+
+        <!-- Matched Policy -->
+        <div class="policy-result">
+          <div class="policy-header-row">
+            <span class="policy-id-tag" id="policy-id">POL-000</span>
+            <span class="policy-ref-tag" id="policy-reference">General</span>
+            <span class="policy-ref-tag" id="policy-confidence">High</span>
+          </div>
+
+          <h2 class="policy-name" id="policy-name">Policy Name</h2>
+          <div id="policy-resolution" class="solution-text hidden"></div>
+
+          <!-- Explanation breakdown -->
+          <div id="match-explanation" class="explanation-box">
+            <div class="explanation-title">MATCH EXPLANATION</div>
+            <div id="explanation-text" class="explanation-text"></div>
+          </div>
+
+          <!-- Secondary Policy (Only if ambiguous) -->
+          <div id="runner-up-card" class="runner-up-box hidden">
+            <span class="runner-up-tag">Alternative: <span id="runner-up-id">POL-000</span></span>
+            <span class="runner-up-name" id="runner-up-name">Alternative Policy</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3. Manual Review Required View -->
+      <div id="view-manual-review" class="state-view hidden">
+        <div class="manual-review-box">
+          <div class="manual-review-title">MANUAL REVIEW REQUIRED</div>
+          <p id="manual-review-reason" class="manual-review-desc">Contradictory evidence or ambiguous interpretation detected.</p>
+          <div id="manual-review-details" class="manual-review-details"></div>
+        </div>
+      </div>
+
+      <!-- 4. No Policy Found View -->
+      <div id="view-no-policy" class="state-view hidden">
+        <div class="no-policy-box">
+          <div class="no-policy-title">NO POLICY FOUND</div>
+          <p id="no-policy-reason" class="no-policy-desc" style="font-size: 11px; color: #64748b; margin-top: 4px;"></p>
+        </div>
+      </div>
+
+      <!-- 5. No Ticket Detected on Page View -->
+      <div id="view-not-ticket-page" class="state-view hidden">
+        <div class="info-box">
+          <div class="info-title">No Ticket Detected</div>
+          <p class="info-subtext">Open a support ticket or enter details manually below.</p>
+
+          <!-- Manual Ticket Entry Form -->
+          <details class="config-details" open style="margin-top: 10px;">
+            <summary class="config-summary">Enter Ticket Manually</summary>
+            <div class="config-form">
+              <label class="form-label" for="manual-title">Subject / Title:</label>
+              <input type="text" id="manual-title" class="form-input" placeholder="e.g. User cannot connect to VPN">
+
+              <label class="form-label" for="manual-desc">Description / Body:</label>
+              <textarea id="manual-desc" class="form-input" style="height: 55px; resize: vertical;" placeholder="e.g. GlobalProtect tunnel fails after certificate renewal"></textarea>
+
+              <button id="btn-evaluate-manual" class="btn-save">Evaluate Policy</button>
+            </div>
+          </details>
+
+          <!-- Custom Selector Config Toggle -->
+          <details class="config-details" style="margin-top: 8px;">
+            <summary class="config-summary">Configure Custom Selectors</summary>
+            <div class="config-form">
+              <label class="form-label" for="cfg-domain">Domain Pattern:</label>
+              <input type="text" id="cfg-domain" class="form-input" placeholder="e.g. support.company.com">
+
+              <label class="form-label" for="cfg-title">Title CSS Selector:</label>
+              <input type="text" id="cfg-title" class="form-input" placeholder="e.g. h1.ticket-title">
+
+              <label class="form-label" for="cfg-desc">Description CSS Selector:</label>
+              <input type="text" id="cfg-desc" class="form-input" placeholder="e.g. .ticket-description">
+
+              <button id="btn-save-config" class="btn-save">Save & Re-scan</button>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- 6. Error View -->
+      <div id="view-error" class="state-view hidden">
+        <div class="error-box">
+          <div class="error-title">Error</div>
+          <div class="error-desc" id="error-message">Could not evaluate page.</div>
+          <button id="btn-retry" class="btn-retry">Retry</button>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer Action Bar -->
+    <footer class="popup-footer">
+      <button id="btn-open-importer" class="btn-import-link">Import Policies (.docx)</button>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="policy-service.js"></script>
+  <script src="matcher.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,387 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-10-14",
+  "disclaimer": "FICTIONAL TEST CONTENT - For prototype demonstration and testing purposes only. Not official organizational guidance.",
+  "policies": [
+    {
+      "id": "POL-SEC-001",
+      "name": "Corporate Password Reset & Self-Service Portal",
+      "category": "Identity & Access Management",
+      "problemDescription": "User has forgotten their domain password, password has expired, or user is unable to authenticate due to credential mismatch.",
+      "keywords": [
+        "password",
+        "forgot password",
+        "expired password",
+        "change password",
+        "reset password",
+        "credentials",
+        "self-service password reset",
+        "sspr",
+        "auth token"
+      ],
+      "synonyms": [
+        "passcode",
+        "passphrase",
+        "login secret",
+        "access code",
+        "sign in code",
+        "credential reset",
+        "secret question"
+      ],
+      "approvedSolution": "Direct user to the Self-Service Password Reset (SSPR) portal or perform an out-of-band verified identity reset via the IT Helpdesk console.",
+      "stepByStepInstructions": [
+        "1. Confirm user identity via two-factor mobile push or manager confirmation callback.",
+        "2. Direct user to https://sspr.internal.local or open Active Directory Users & Computers.",
+        "3. If performing manual reset: check 'User must change password at next logon' and generate a compliant temporary password (min 16 chars).",
+        "4. Instruct user to sign into workstation or portal using the temporary password.",
+        "5. Verify successful sign-in and confirm multi-factor authentication (MFA) token status.",
+        "6. Document the identity verification method in the ticket and close."
+      ],
+      "reference": "REF-SEC-SOP-101"
+    },
+    {
+      "id": "POL-SEC-002",
+      "name": "Account Lockout & Brute-Force Remediation",
+      "category": "Identity & Access Management",
+      "problemDescription": "User account has been locked out after exceeding the maximum allowed consecutive failed logon attempts (5 attempts threshold).",
+      "keywords": [
+        "account locked",
+        "account lockout",
+        "locked out",
+        "too many failed attempts",
+        "bad password count",
+        "disabled account",
+        "unlock user",
+        "active directory lockout"
+      ],
+      "synonyms": [
+        "frozen account",
+        "blocked profile",
+        "exceeded attempts",
+        "sign-in blocked",
+        "user disabled",
+        "login locked"
+      ],
+      "approvedSolution": "Inspect the source domain controller for repeated bad password events, unlock the domain account, and clear cached credentials on secondary devices.",
+      "stepByStepInstructions": [
+        "1. Query the LockoutStatus diagnostic tool to identify which workstation or service caused the repeated bad password events.",
+        "2. Verify with the user if they recently changed their password on mobile, tablet, or secondary laptops.",
+        "3. Instruct the user to disconnect Wi-Fi on secondary devices temporarily to avoid re-locking.",
+        "4. In AD Users & Computers, right-click the user account, select Properties -> Account -> check 'Unlock account' -> click Apply.",
+        "5. Have user attempt login from their primary workstation.",
+        "6. Assist user in updating cached credentials on secondary devices before reconnecting network.",
+        "7. Resolve ticket and set category to Security: Account Lockout."
+      ],
+      "reference": "REF-SEC-SOP-102"
+    },
+    {
+      "id": "POL-APP-003",
+      "name": "Corporate Email & Mailbox Access Troubleshooting",
+      "category": "Productivity Applications",
+      "problemDescription": "User cannot send, receive, or access emails in Microsoft Outlook or the webmail client, experiences mailbox quota errors, or sync errors.",
+      "keywords": [
+        "email",
+        "outlook",
+        "webmail",
+        "mailbox",
+        "mailbox full",
+        "send receive error",
+        "cannot send email",
+        "cannot receive email",
+        "pst",
+        "ost file",
+        "exchange online"
+      ],
+      "synonyms": [
+        "mail",
+        "inbox",
+        "messages not coming",
+        "outbox stuck",
+        "email quota",
+        "mail delivery failed",
+        "o365 mail"
+      ],
+      "approvedSolution": "Check Exchange Online tenant status, verify mailbox storage capacity, and repair corrupted local OST cache or Outlook mail profiles.",
+      "stepByStepInstructions": [
+        "1. Verify tenant-wide Exchange status at status.internal.local.",
+        "2. Check user's mailbox quota in Microsoft 365 Admin Center (ensure under 95% capacity).",
+        "3. Test webmail access via https://outlook.office.com to isolate desktop client versus server-side issues.",
+        "4. If webmail works, close Outlook on client machine and launch 'outlook.exe /safe'.",
+        "5. If error persists, navigate to Control Panel -> Mail -> Show Profiles and rebuild corrupted profile.",
+        "6. Confirm send/receive synchronization completes with 0 errors.",
+        "7. Close ticket and record resolution as Outlook Profile Rebuild."
+      ],
+      "reference": "REF-APP-SOP-201"
+    },
+    {
+      "id": "POL-NET-004",
+      "name": "Local Network & Wi-Fi Connectivity Resolution",
+      "category": "Network Infrastructure",
+      "problemDescription": "Device cannot connect to the corporate wired LAN or wireless 802.1x network, receives self-assigned APIPA IP (169.254.x.x), or suffers frequent disconnects.",
+      "keywords": [
+        "network",
+        "wifi",
+        "wi-fi",
+        "ethernet",
+        "lan",
+        "no internet",
+        "dhcp",
+        "ip address",
+        "dns failure",
+        "disconnecting",
+        "limited connectivity",
+        "apipa"
+      ],
+      "synonyms": [
+        "wireless",
+        "internet down",
+        "cant browse",
+        "cable unplugged",
+        "dropped connection",
+        "no signal",
+        "offline"
+      ],
+      "approvedSolution": "Renew DHCP lease, flush DNS cache, verify 802.1x machine certificate validity, and validate switch port status.",
+      "stepByStepInstructions": [
+        "1. Check physical link light on Ethernet adapter or confirm corporate SSID 'Corp-Secure-WiFi' is visible.",
+        "2. Open Command Prompt as Administrator and run 'ipconfig /release' followed by 'ipconfig /renew'.",
+        "3. Execute 'ipconfig /flushdns' and verify DNS server reaches 10.0.0.10 and 10.0.0.11.",
+        "4. Check computer certificates MMC (certlm.msc) to verify 'Corporate Device Root CA' is valid and not expired.",
+        "5. If on Wi-Fi, forget 'Corp-Secure-WiFi' network profile and rejoin using domain credentials.",
+        "6. If wired, test cable on an alternate verified wall jack.",
+        "7. Validate successful ping to internal default gateway and external public DNS (8.8.8.8)."
+      ],
+      "reference": "REF-NET-SOP-301"
+    },
+    {
+      "id": "POL-APP-005",
+      "name": "Software Installation & Application Packaging Approval",
+      "category": "Application Support",
+      "problemDescription": "User requests new software installation, software upgrade, license assignment, or installation error remediation for corporate workstations.",
+      "keywords": [
+        "software installation",
+        "install software",
+        "install application",
+        "request software",
+        "software license",
+        "application deploy",
+        "company portal",
+        "intune",
+        "sccm",
+        "admin privileges required"
+      ],
+      "synonyms": [
+        "download app",
+        "install program",
+        "need software",
+        "setup tool",
+        "upgrade application",
+        "add software",
+        "license key"
+      ],
+      "approvedSolution": "Deploy approved software via Intune Company Portal self-service catalog or submit manager-approved procurement request for uncataloged commercial software.",
+      "stepByStepInstructions": [
+        "1. Check if requested application is already in the Approved Software Catalog (Standard Tier).",
+        "2. Instruct user to open 'Company Portal' from Start Menu and click 'Install' on the approved app.",
+        "3. If application is non-standard or commercial: verify manager budget approval ticket.",
+        "4. Ensure security team review is logged for third-party executable packages.",
+        "5. Deploy via Intune device group or perform remote unattended MSI installation using deployment credentials.",
+        "6. Verify license allocation in IT Asset Management system.",
+        "7. Have user launch the application to verify launch without administrative prompts."
+      ],
+      "reference": "REF-APP-SOP-202"
+    },
+    {
+      "id": "POL-OPS-006",
+      "name": "Printer & Multifunction Peripheral Troubleshooting",
+      "category": "Workplace Operations",
+      "problemDescription": "Printer offline, documents stuck in print queue, paper jams, toner replacement, or unable to map network print queue.",
+      "keywords": [
+        "printer",
+        "print queue",
+        "paper jam",
+        "printer offline",
+        "spooler",
+        "toner",
+        "print job stuck",
+        "cannot print",
+        "network printer",
+        "printer driver"
+      ],
+      "synonyms": [
+        "printing",
+        "printout",
+        "copier",
+        "scanner",
+        "printer jammed",
+        "empty cartridge",
+        "page not coming out",
+        "mfp"
+      ],
+      "approvedSolution": "Restart local Print Spooler service, remove hung print jobs from spool directory, or remap the universal Follow-Me print queue.",
+      "stepByStepInstructions": [
+        "1. Verify printer hardware status (display screen, paper trays 1-3, toner levels).",
+        "2. On user machine, open 'services.msc' and locate 'Print Spooler'.",
+        "3. Stop the Print Spooler service.",
+        "4. Navigate to 'C:\\Windows\\System32\\spool\\PRINTERS' and delete all pending temporary spool files.",
+        "5. Start the Print Spooler service.",
+        "6. If printer is a network queue, remap via '\\\\printserver01\\FollowMe-Global'.",
+        "7. Send a standard Windows test page and verify output."
+      ],
+      "reference": "REF-OPS-SOP-401"
+    },
+    {
+      "id": "POL-NET-007",
+      "name": "Virtual Private Network (VPN) Remote Access",
+      "category": "Network Infrastructure",
+      "problemDescription": "Remote user cannot establish VPN connection, receives gateway timeout, SSL handshake failure, or split-tunneling routing issues.",
+      "keywords": [
+        "vpn",
+        "remote access",
+        "anyconnect",
+        "globalprotect",
+        "vpn tunnel",
+        "gateway timeout",
+        "vpn connection failed",
+        "remote worker",
+        "work from home",
+        "split tunneling"
+      ],
+      "synonyms": [
+        "virtual private network",
+        "tunnel connection",
+        "remote login",
+        "telework connection",
+        "home office connect",
+        "secure tunnel"
+      ],
+      "approvedSolution": "Verify user VPN group membership in Active Directory, validate client client version, and test connection across alternative gateway endpoints.",
+      "stepByStepInstructions": [
+        "1. Confirm user is assigned to AD security group 'VPN-Remote-Users-Global'.",
+        "2. Ensure user has an active public internet connection by testing access to standard web services.",
+        "3. Launch VPN Client and ensure gateway is set to 'vpn.company.com' (or failover 'vpn-backup.company.com').",
+        "4. Prompt user for standard corporate credentials followed by Duo/MFA Push approval.",
+        "5. If connection fails with TLS certificate warning, update client root certificates.",
+        "6. If route flapping occurs, disable IPv6 on the home Wi-Fi adapter.",
+        "7. Confirm IP assignment within 10.240.x.x pool and verify access to intranet resources."
+      ],
+      "reference": "REF-NET-SOP-302"
+    },
+    {
+      "id": "POL-SEC-008",
+      "name": "Access Permissions & Role-Based Security Group Request",
+      "category": "Identity & Access Management",
+      "problemDescription": "User receives 'Access Denied', 'Permission Denied', or lacks authorization to shared network folders, SharePoint document libraries, or Jira projects.",
+      "keywords": [
+        "access denied",
+        "permission denied",
+        "access permission",
+        "shared folder access",
+        "sharepoint permissions",
+        "security group",
+        "file share",
+        "folder rights",
+        "role based access",
+        "rbac"
+      ],
+      "synonyms": [
+        "no permission",
+        "cant open folder",
+        "authorization error",
+        "restricted access",
+        "need permission",
+        "request access",
+        "shared drive access"
+      ],
+      "approvedSolution": "Obtain written approval from the departmental Data Owner, then add the user's AD object to the designated Role-Based Access Control (RBAC) security group.",
+      "stepByStepInstructions": [
+        "1. Identify the specific folder path (UNC path) or SharePoint URL requested.",
+        "2. Check the Access Matrix to identify the designated Data Owner / Department Manager.",
+        "3. Confirm written authorization or ticket approval from the Data Owner is attached.",
+        "4. In Active Directory / Azure AD, locate the target resource group (e.g., 'SG-Finance-ReadWrite').",
+        "5. Add user to the group with standard 90-day review flag.",
+        "6. Instruct user to lock (Win+L) and unlock their workstation to refresh Kerberos group membership tokens.",
+        "7. Confirm user can read/write to the requested resource."
+      ],
+      "reference": "REF-SEC-SOP-103"
+    },
+    {
+      "id": "POL-OPS-009",
+      "name": "Hardware Malfunction & Physical Asset Diagnostic",
+      "category": "Workplace Operations",
+      "problemDescription": "Physical workstation, laptop, monitor, docking station, battery, or peripheral is failing, crashing with blue screen (BSOD), or failing to power on.",
+      "keywords": [
+        "hardware",
+        "blue screen",
+        "bsod",
+        "laptop broken",
+        "wont power on",
+        "monitor flicker",
+        "docking station",
+        "battery swollen",
+        "overheating",
+        "hardware diagnostic",
+        "crash dump"
+      ],
+      "synonyms": [
+        "broken screen",
+        "device dead",
+        "wont turn on",
+        "machine crash",
+        "pc dead",
+        "fan loud",
+        "physical damage",
+        "dock issue"
+      ],
+      "approvedSolution": "Perform hardware diagnostics via OEM UEFI diagnostic tools, capture BSOD crash dump logs, or initiate hardware replacement / loaner laptop dispatch.",
+      "stepByStepInstructions": [
+        "1. If battery is swollen or physically hot, immediately instruct user to disconnect charger, power down, and move to fire-safe area.",
+        "2. For BSOD: reboot machine, tap F12 at boot, and run comprehensive OEM hardware diagnostics (ePSA / SupportAssist).",
+        "3. Review C:\\Windows\\Minidump files to identify faulted driver or failing hardware module (RAM/SSD).",
+        "4. For docking station issues: perform cold power cycle (unplug all cables, hold power 30s) and update Thunderbolt firmware.",
+        "5. If hardware diagnostic fails: record service tag, error code, and validation code.",
+        "6. Provision loaner laptop from IT depot and dispatch OEM warranty technician for on-site part replacement.",
+        "7. Update IT Asset Management CMDB inventory records with loaner and repair status."
+      ],
+      "reference": "REF-OPS-SOP-402"
+    },
+    {
+      "id": "POL-OPS-010",
+      "name": "Data Recovery & File Restoration from Backup",
+      "category": "Data Management & Storage",
+      "problemDescription": "User accidentally deleted files, overwritten important documents, corrupted local directories, or suffered ransomware encryption.",
+      "keywords": [
+        "data recovery",
+        "restore file",
+        "restore folder",
+        "deleted file",
+        "accidentally deleted",
+        "file recovery",
+        "shadow copy",
+        "backup restore",
+        "onedrive version history",
+        "recycle bin"
+      ],
+      "synonyms": [
+        "lost file",
+        "missing document",
+        "deleted by mistake",
+        "retrieve files",
+        "rollback version",
+        "unintentional delete",
+        "recover spreadsheet"
+      ],
+      "approvedSolution": "Recover deleted items via OneDrive/SharePoint Version History, Previous Versions (VSS Shadow Copies), or Veeam Enterprise Backup archives.",
+      "stepByStepInstructions": [
+        "1. Collect exact filename, file path, and approximate date/time of last known good version.",
+        "2. Check user's local Windows Recycle Bin and Cloud Second-Stage Recycle Bin.",
+        "3. If stored on OneDrive/SharePoint: open file version history in browser and select 'Restore' on the desired timestamp.",
+        "4. If stored on enterprise file server: right-click parent folder -> Properties -> 'Previous Versions' tab to restore shadow copy snapshot.",
+        "5. If file was deleted beyond snapshot retention window: initiate restore job via enterprise Veeam Backup Console.",
+        "6. Restore file to a designated temporary recovery sandbox folder ('C:\\IT_Recovery\\Restored_Files') rather than overwriting in place.",
+        "7. Have user review and confirm integrity of the recovered file before closing ticket."
+      ],
+      "reference": "REF-OPS-SOP-403"
+    }
+  ]
+}

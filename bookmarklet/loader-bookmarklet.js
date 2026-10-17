@@ -1,0 +1,1 @@
+javascript:(function(){var s=document.createElement('script');s.src='https://intranet.company.local/policy-lookup.js?t='+Date.now();document.body.appendChild(s);})();

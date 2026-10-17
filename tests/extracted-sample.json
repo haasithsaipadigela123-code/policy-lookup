@@ -1,0 +1,169 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-10-14",
+  "sourceDocument": "sample-policies.docx",
+  "disclaimer": "FICTIONAL TEST CONTENT - For prototype demonstration and testing purposes only.",
+  "policyCount": 5,
+  "policies": [
+    {
+      "id": "POL-SEC-001",
+      "name": "Corporate Password Reset",
+      "category": "Security",
+      "problemDescription": "User cannot log in due to forgotten or expired domain credentials.",
+      "conditions": "User cannot log in due to forgotten or expired domain credentials.",
+      "exceptions": "VIP executives require immediate phone verification.",
+      "resolution": "Direct user to self-service portal (SSPR) or reset via Active Directory console.",
+      "approvedSolution": "Direct user to self-service portal (SSPR) or reset via Active Directory console.",
+      "stepByStepInstructions": [],
+      "keywords": [
+        "password",
+        "sspr",
+        "credentials",
+        "forgot password"
+      ],
+      "synonyms": [],
+      "allColumns": {
+        "Policy Code": "POL-SEC-001",
+        "Topic": "Corporate Password Reset",
+        "Department": "Security",
+        "Conditions": "User cannot log in due to forgotten or expired domain credentials.",
+        "Exceptions": "VIP executives require immediate phone verification.",
+        "Approved Solution": "Direct user to self-service portal (SSPR) or reset via Active Directory console.",
+        "Keywords": "password, sspr, credentials, forgot password"
+      },
+      "sourceMeta": {
+        "tableIndex": 1,
+        "rowIndex": 2,
+        "documentSource": "sample-policies.docx"
+      }
+    },
+    {
+      "id": "POL-SEC-002",
+      "name": "Account Lockout Remediation",
+      "category": "Security",
+      "problemDescription": "Account locked after 5 consecutive bad login attempts.",
+      "conditions": "Account locked after 5 consecutive bad login attempts.",
+      "exceptions": "Accounts flagged for suspicious geolocation cannot be unlocked without security officer sign-off.",
+      "resolution": "Verify user identity and clear lockout flag in Active Directory domain controller.",
+      "approvedSolution": "Verify user identity and clear lockout flag in Active Directory domain controller.",
+      "stepByStepInstructions": [],
+      "keywords": [
+        "account locked",
+        "lockout",
+        "unlock",
+        "bad password"
+      ],
+      "synonyms": [],
+      "allColumns": {
+        "Policy Code": "POL-SEC-002",
+        "Topic": "Account Lockout Remediation",
+        "Department": "Security",
+        "Conditions": "Account locked after 5 consecutive bad login attempts.",
+        "Exceptions": "Accounts flagged for suspicious geolocation cannot be unlocked without security officer sign-off.",
+        "Approved Solution": "Verify user identity and clear lockout flag in Active Directory domain controller.",
+        "Keywords": "account locked, lockout, unlock, bad password"
+      },
+      "sourceMeta": {
+        "tableIndex": 1,
+        "rowIndex": 3,
+        "documentSource": "sample-policies.docx"
+      }
+    },
+    {
+      "id": "POL-NET-003",
+      "name": "Remote Access VPN Connection Troubleshooting",
+      "category": "Infrastructure",
+      "problemDescription": "User is unable to establish connection to corporate GlobalProtect or AnyConnect VPN.",
+      "conditions": "User is unable to establish connection to corporate GlobalProtect or AnyConnect VPN.",
+      "exceptions": "Contractors require active sponsor approval token before reconnecting.",
+      "resolution": "Reinstall root security certificates, verify MFA push notification, and restart VPN tunnel service.",
+      "approvedSolution": "Reinstall root security certificates, verify MFA push notification, and restart VPN tunnel service.",
+      "stepByStepInstructions": [],
+      "keywords": [
+        "vpn",
+        "globalprotect",
+        "anyconnect",
+        "remote connection"
+      ],
+      "synonyms": [],
+      "allColumns": {
+        "Policy Code": "POL-NET-003",
+        "Topic": "Remote Access VPN Connection Troubleshooting",
+        "Department": "Infrastructure",
+        "Conditions": "User is unable to establish connection to corporate GlobalProtect or AnyConnect VPN.",
+        "Exceptions": "Contractors require active sponsor approval token before reconnecting.",
+        "Approved Solution": "Reinstall root security certificates, verify MFA push notification, and restart VPN tunnel service.",
+        "Keywords": "vpn, globalprotect, anyconnect, remote connection"
+      },
+      "sourceMeta": {
+        "tableIndex": 1,
+        "rowIndex": 4,
+        "documentSource": "sample-policies.docx"
+      }
+    },
+    {
+      "id": "POL-OPS-006",
+      "name": "Office Network Printer Maintenance",
+      "category": "General",
+      "problemDescription": "Print spooler errors, paper jams, or missing networked office printers.",
+      "conditions": "Print spooler errors, paper jams, or missing networked office printers.",
+      "exceptions": "Personal USB printers not purchased through IT are not serviced.",
+      "resolution": "Power-cycle the printer, clear jammed paper tray, and restart print spooler service.",
+      "approvedSolution": "Power-cycle the printer, clear jammed paper tray, and restart print spooler service.",
+      "stepByStepInstructions": [],
+      "keywords": [
+        "office",
+        "network",
+        "printer",
+        "maintenance"
+      ],
+      "synonyms": [],
+      "allColumns": {
+        "Item No": "POL-OPS-006",
+        "Policy Title": "Office Network Printer Maintenance",
+        "Scope": "Print spooler errors, paper jams, or missing networked office printers.",
+        "Exclusions": "Personal USB printers not purchased through IT are not serviced.",
+        "Resolution": "Power-cycle the printer, clear jammed paper tray, and restart print spooler service.",
+        "Custom Department Note": "Tier 1 On-Site Dispatch"
+      },
+      "sourceMeta": {
+        "tableIndex": 2,
+        "rowIndex": 2,
+        "documentSource": "sample-policies.docx"
+      }
+    },
+    {
+      "id": "POL-OPS-009",
+      "name": "Blue Screen and Operating System Crash",
+      "category": "General",
+      "problemDescription": "Workstation BSOD, kernel panic, or frequent spontaneous operating system restarts.",
+      "conditions": "Workstation BSOD, kernel panic, or frequent spontaneous operating system restarts.",
+      "exceptions": "Physical liquid damage requires hardware warranty replacement.",
+      "resolution": "Inspect minidump files with WinDbg, roll back recent driver updates, and test RAM integrity.",
+      "approvedSolution": "Inspect minidump files with WinDbg, roll back recent driver updates, and test RAM integrity.",
+      "stepByStepInstructions": [],
+      "keywords": [
+        "blue",
+        "screen",
+        "and",
+        "operating",
+        "system",
+        "crash"
+      ],
+      "synonyms": [],
+      "allColumns": {
+        "Item No": "POL-OPS-009",
+        "Policy Title": "Blue Screen and Operating System Crash",
+        "Scope": "Workstation BSOD, kernel panic, or frequent spontaneous operating system restarts.",
+        "Exclusions": "Physical liquid damage requires hardware warranty replacement.",
+        "Resolution": "Inspect minidump files with WinDbg, roll back recent driver updates, and test RAM integrity.",
+        "Custom Department Note": "Tier 2 Hardware Support"
+      },
+      "sourceMeta": {
+        "tableIndex": 2,
+        "rowIndex": 3,
+        "documentSource": "sample-policies.docx"
+      }
+    }
+  ]
+}

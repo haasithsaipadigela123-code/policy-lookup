@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Lookup — Local Policy Decision & Ticket Analysis Portal</title>
+  <meta name="description" content="Local-first policy lookup and ticket analysis system. 100% private, zero external AI APIs, zero cloud backends.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#" class="brand-wrap" id="brand-link">
+        <img src="assets/logo.png" alt="Policy Lookup Logo" class="brand-logo-img">
+        <div class="brand-title">Policy Lookup</div>
+      </a>
+
+      <nav class="nav-links">
+        <button id="nav-home" class="nav-btn active">Home</button>
+        <button id="nav-library" class="nav-btn">Policy Library</button>
+        <button id="nav-activity" class="nav-btn">Recent Activity</button>
+      </nav>
+
+      <div class="header-privacy-badge">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a10 10 0 1 0 10 10c0-4.42-3-8-8-8"/>
+          <path d="M12 6a6 6 0 1 0 6 6"/>
+          <path d="M12 10a2 2 0 1 0 2 2"/>
+        </svg>
+        <span>Local processing - No external AI</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+
+    <!-- VIEW 1: HOME DASHBOARD -->
+    <section id="view-home" class="view-panel active">
+      
+      <!-- Hero Section with Headline & Soft Graphic -->
+      <div class="hero-container">
+        <div class="hero-left">
+          <h1 class="hero-heading">Find the right policy.<br>Resolve tickets with confidence.</h1>
+          <p class="hero-subheading">Upload your policies, provide a ticket, and get an evidence-based recommendation.</p>
+        </div>
+        <div class="hero-right">
+          <div class="hero-illustration">
+            <svg class="hero-illustration-svg" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Soft background organic shape -->
+              <ellipse cx="125" cy="95" rx="85" ry="65" fill="#E6EFE9"/>
+              <ellipse cx="160" cy="115" rx="45" ry="35" fill="#D8E8DC"/>
+              
+              <!-- Document Paper -->
+              <g filter="drop-shadow(0 4px 12px rgba(42,90,74,0.08))">
+                <path d="M72 32 C72 26, 76 22, 82 22 L142 22 L172 52 L172 136 C172 142, 168 146, 162 146 L82 146 C76 146, 72 142, 72 136 Z" fill="#FFFFFF" stroke="#D3E0D6" stroke-width="1.8"/>
+                <path d="M142 22 L142 48 C142 50, 144 52, 146 52 L172 52" fill="#F4F8F5" stroke="#D3E0D6" stroke-width="1.8"/>
+                <!-- Document Content Lines -->
+                <line x1="88" y1="58" x2="128" y2="58" stroke="#8CA695" stroke-width="3" stroke-linecap="round"/>
+                <line x1="88" y1="72" x2="152" y2="72" stroke="#B8CDC0" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="88" y1="84" x2="145" y2="84" stroke="#B8CDC0" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="88" y1="96" x2="135" y2="96" stroke="#B8CDC0" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="88" y1="108" x2="150" y2="108" stroke="#B8CDC0" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+
+              <!-- Shield Badge on Right of Document -->
+              <g filter="drop-shadow(0 4px 8px rgba(42,90,74,0.18))">
+                <path d="M192 78 C192 78 206 72 206 63 L206 48 L192 43 L178 48 L178 63 C178 72 192 78 192 78 Z" fill="#2D6A4F"/>
+                <path d="M186 60 L190 64 L198 56" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+
+              <!-- Magnifying Glass -->
+              <g filter="drop-shadow(0 6px 12px rgba(42,90,74,0.15))">
+                <circle cx="160" cy="118" r="20" fill="#FFFFFF" stroke="#2D6A4F" stroke-width="4"/>
+                <line x1="174" y1="132" x2="192" y2="150" stroke="#2D6A4F" stroke-width="5" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-Step Progress Bar -->
+      <nav class="stepper-nav" aria-label="Analysis Workflow Steps">
+        <div class="step-indicator-item active" id="step-nav-1" data-step="1">
+          <div class="step-num" id="step-num-1">1</div>
+          <div class="step-label">1. Policy Documents</div>
+        </div>
+        <div class="step-connector" id="step-conn-1"></div>
+        <div class="step-indicator-item" id="step-nav-2" data-step="2">
+          <div class="step-num" id="step-num-2">2</div>
+          <div class="step-label">2. Provide Ticket</div>
+        </div>
+        <div class="step-connector" id="step-conn-2"></div>
+        <div class="step-indicator-item" id="step-nav-3" data-step="3">
+          <div class="step-num" id="step-num-3">3</div>
+          <div class="step-label">3. Review Ticket</div>
+        </div>
+        <div class="step-connector" id="step-conn-3"></div>
+        <div class="step-indicator-item" id="step-nav-4" data-step="4">
+          <div class="step-num" id="step-num-4">4</div>
+          <div class="step-label">4. Analysis Results</div>
+        </div>
+      </nav>
+
+      <!-- ===================================================================
+           STEP 1 CONTAINER: Policy Documents
+           =================================================================== -->
+      <div id="step-container-1" class="step-container active">
+        <div class="step-header-wrap">
+          <h2 class="step-main-title">Add Policy Documents</h2>
+          <p class="step-main-subtext">Upload the documents your organization uses to make policy decisions (PDF, DOCX, XLSX, CSV, TXT). All files are processed 100% locally in your browser.</p>
+        </div>
+
+        <div class="dropzone-box" id="dropzone-box" style="margin-bottom: 20px;">
+          <div class="dropzone-icon-wrap">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/>
+              <path d="M12 12v9"/>
+              <path d="m16 16-4-4-4 4"/>
+            </svg>
+          </div>
+          <div class="dropzone-prompt">Drag and drop policy files here or</div>
+          <label class="btn-choose-files" for="file-input-home">Choose Files</label>
+          <input type="file" id="file-input-home" multiple accept=".pdf,.docx,.txt,.csv,.tsv,.xlsx,.json" style="display:none;">
+          <div class="dropzone-formats">Supported formats: PDF, DOCX, TXT, CSV, XLSX</div>
+        </div>
+
+        <div id="home-docs-container" class="home-docs-container">
+          <div class="home-docs-header">
+            <span id="home-docs-count-label" style="font-size: 12px; font-weight: 600; color: var(--text-secondary);">0 documents ready</span>
+            <a href="#" id="link-view-library" class="arrow-link" style="font-size: 12px;">Manage in Policy Library →</a>
+          </div>
+          <div id="home-docs-list" class="home-docs-list">
+            <div class="home-docs-empty">No policy documents uploaded yet. Upload a document above to begin.</div>
+          </div>
+        </div>
+
+        <div class="step-nav-bar">
+          <span style="font-size: 12px; color: var(--text-muted);" id="step1-ready-hint">Upload at least one document to proceed.</span>
+          <button class="btn-wizard-primary" id="btn-step1-continue">Continue to Ticket Input →</button>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           STEP 2 CONTAINER: Select & Provide Ticket
+           =================================================================== -->
+      <div id="step-container-2" class="step-container">
+        <!-- 2A: Method Selection Grid -->
+        <div id="step2-method-selector">
+          <div class="step-header-wrap">
+            <h2 class="step-main-title">How would you like to provide the ticket?</h2>
+            <p class="step-main-subtext">Choose an intake method to provide the support request for policy analysis.</p>
+          </div>
+
+          <div class="method-choice-grid">
+            <!-- Choice 1: Ticket Link -->
+            <div class="method-choice-card" id="choice-link" data-method="link">
+              <div>
+                <div class="method-choice-icon">🔗</div>
+                <div class="method-choice-title">Ticket Link</div>
+                <div class="method-choice-desc">Retrieve a public issue or ticket directly from an external URL (e.g. GitHub issue, public portal).</div>
+              </div>
+              <div class="method-choice-arrow">Retrieve from Link →</div>
+            </div>
+
+            <!-- Choice 2: Description -->
+            <div class="method-choice-card" id="choice-desc" data-method="desc">
+              <div>
+                <div class="method-choice-icon">📄</div>
+                <div class="method-choice-title">Description</div>
+                <div class="method-choice-desc">Type or paste the ticket title and problem description in natural language.</div>
+              </div>
+              <div class="method-choice-arrow">Enter Description →</div>
+            </div>
+
+            <!-- Choice 3: Conversation -->
+            <div class="method-choice-card" id="choice-conv" data-method="conv">
+              <div>
+                <div class="method-choice-icon">💬</div>
+                <div class="method-choice-title">Conversation</div>
+                <div class="method-choice-desc">Paste the customer chat transcript or upload a conversation file with turn preservation.</div>
+              </div>
+              <div class="method-choice-arrow">Paste Conversation →</div>
+            </div>
+
+            <!-- Choice 4: Guided Form -->
+            <div class="method-choice-card" id="choice-guided" data-method="guided">
+              <div>
+                <div class="method-choice-icon">🧭</div>
+                <div class="method-choice-title">Guided Form</div>
+                <div class="method-choice-desc">Answer step-by-step questions to construct a structured support ticket draft.</div>
+              </div>
+              <div class="method-choice-arrow">Start Guided Form →</div>
+            </div>
+          </div>
+
+          <div class="step-nav-bar">
+            <button class="btn-wizard-secondary" id="btn-step2-back-step1">← Back to Documents</button>
+            <span style="font-size: 12px; color: var(--text-muted);">Choose one of the 4 intake options above</span>
+          </div>
+        </div>
+
+        <!-- 2B: Dedicated Input Panes (Only the selected one is visible!) -->
+        <div id="step2-method-input" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 12px;">
+            <button class="btn-wizard-secondary" id="btn-back-to-methods">← Choose a Different Method</button>
+            <span id="active-method-indicator-badge" class="status-pill-neutral">Intake Mode</span>
+          </div>
+
+          <!-- Method 1: Ticket Link Pane -->
+          <div id="panel-link" class="tab-panel" style="display: none;">
+            <div class="ticket-input-container">
+              <div class="input-with-icon">
+                <span class="field-icon">🔗</span>
+                <input type="url" id="ticket-url-input" class="text-input-field" placeholder="Paste ticket link (e.g. GitHub issue, Jira, HelpDesk, HESK)">
+                <button class="btn-input-action" id="btn-retrieve-url">Retrieve</button>
+              </div>
+            </div>
+            
+            <div id="url-status-msg" class="field-status-msg"></div>
+
+            <!-- Authentic Retrieved Ticket Card View -->
+            <div id="url-ticket-card" class="url-ticket-card" style="display: none;">
+              <div class="url-ticket-header">
+                <div class="url-ticket-platform-info">
+                  <span id="utc-platform-icon" class="utc-platform-icon">🎫</span>
+                  <span id="utc-platform-name" class="utc-platform-name">Platform Issue</span>
+                  <span id="utc-id-pill" class="utc-id-pill">#0000</span>
+                  <span class="utc-status-pill">● Open</span>
+                </div>
+                <a id="utc-external-link" href="#" target="_blank" rel="noopener noreferrer" class="utc-ext-link">
+                  <span>View Original ↗</span>
+                </a>
+              </div>
+              
+              <div class="url-ticket-body-box">
+                <div class="utc-author-line">
+                  <div class="utc-avatar" id="utc-avatar">U</div>
+                  <div class="utc-author-meta">
+                    <span id="utc-author-name"><strong>@user</strong> reported this issue</span>
+                    <span class="utc-provenance-tag">Verified Platform Extraction</span>
+                  </div>
+                </div>
+                <div class="utc-title-heading" id="utc-title">Ticket Title</div>
+                <div class="utc-description-content" id="utc-description">Clean ticket body content...</div>
+              </div>
+
+              <div class="url-ticket-footer-bar">
+                <span id="utc-word-count" style="font-size: 11px; color: var(--text-muted);">0 words · 0 chars</span>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-secondary" id="utc-btn-edit" style="padding: 6px 12px; font-size: 12px;">Edit in Description ✏️</button>
+                  <button class="btn-wizard-primary" id="utc-btn-continue" style="padding: 6px 16px; font-size: 12px;">Continue to Review →</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Knowledge Base Article Preview Card (Section 10: Explicitly separates KB articles from support tickets) -->
+            <div id="url-kb-card" class="url-ticket-card" style="display: none; border: 1px solid var(--brand-border); background: var(--surface);">
+              <div class="url-ticket-header" style="background: var(--brand-subtle);">
+                <div class="url-ticket-platform-info">
+                  <span class="utc-platform-icon">📚</span>
+                  <span id="kb-platform-name" class="utc-platform-name" style="color: var(--brand); font-weight: 600;">Knowledge Base Article</span>
+                  <span class="utc-status-pill" style="background: #E8F2EC; color: var(--brand);">Page Retrieved (Documentation)</span>
+                </div>
+                <a id="kb-external-link" href="#" target="_blank" rel="noopener noreferrer" class="utc-ext-link">
+                  <span>View Original ↗</span>
+                </a>
+              </div>
+              
+              <div class="url-ticket-body-box">
+                <div class="utc-author-line" style="margin-bottom: 6px;">
+                  <span style="font-size: 11px; color: var(--text-secondary);">
+                    ℹ️ <strong>Status: PAGE_RETRIEVED</strong> · Public help article / documentation extracted from remote site.
+                  </span>
+                </div>
+                <div class="utc-title-heading" id="kb-title" style="color: var(--brand); font-size: 15px; margin-bottom: 6px;">Article Title</div>
+                <div class="utc-description-content" id="kb-content" style="max-height: 160px; overflow-y: auto; background: var(--surface-alt); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); line-height: 1.5; font-size: 13px;">Article body text...</div>
+              </div>
+
+              <div class="url-ticket-footer-bar">
+                <span id="kb-word-count" style="font-size: 11px; color: var(--text-muted);">0 words</span>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn-secondary" id="kb-btn-use-as-query" style="padding: 6px 12px; font-size: 12px;">Copy Text to Description 📝</button>
+                  <button class="btn-wizard-primary" id="kb-btn-switch-ticket" style="padding: 6px 14px; font-size: 12px;">Enter Incident Ticket 🎫</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Fallback Card (shown on access barrier or extraction failure) -->
+            <div id="url-fallback-card" class="fallback-card" style="display: none;">
+              <div class="fallback-header">
+                <span class="fallback-badge" id="fallback-badge">TRACKING_ID_REQUIRED</span>
+                <span class="fallback-reason" id="fallback-reason">Access Barrier Detected</span>
+              </div>
+              <div class="fallback-message" id="fallback-message">
+                This page is a ticket access lookup form requiring credentials. Choose an alternative intake method below:
+              </div>
+              <div class="fallback-actions-row">
+                <button class="btn-fallback-action" id="fb-btn-desc">📄 Paste Ticket Description</button>
+                <button class="btn-fallback-action" id="fb-btn-conv">💬 Paste Full Conversation</button>
+                <button class="btn-fallback-action" id="fb-btn-upload-conv">📁 Upload Conversation File</button>
+                <button class="btn-fallback-action" id="fb-btn-guided">🧭 Build Ticket Using Guided Options</button>
+                <button class="btn-fallback-action" id="fb-btn-retry">🔄 Retry URL</button>
+              </div>
+            </div>
+
+            <!-- Collapsible Technical Diagnostics -->
+            <details id="url-diagnostics-details" class="retrieval-diagnostics-box" style="display: none; margin-top: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface-alt); padding: 8px 12px;">
+              <summary style="cursor: pointer; font-weight: 600; font-size: 12px; color: var(--text-secondary); user-select: none;">
+                🔍 Technical Diagnostics & Strategy Trace
+              </summary>
+              <div id="url-diagnostics-content" style="margin-top: 8px; font-family: Consolas, monospace; font-size: 11px; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap; background: var(--surface); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);"></div>
+            </details>
+
+            <div class="outbound-network-notice" style="margin-top: 16px;">
+              <span>🌐</span>
+              <span><strong>Privacy Notice:</strong> Retrieving an external URL contacts that remote host to download public ticket HTML. No credentials, cookies, or local policies are sent.</span>
+            </div>
+          </div>
+
+          <!-- Method 2: Description Pane -->
+          <div id="panel-desc" class="tab-panel" style="display: none;">
+            <div class="step-header-wrap" style="margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary);">Enter Ticket Details</h3>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Enter the customer problem description below. Natural language, abbreviations, and spelling errors are handled automatically.</p>
+            </div>
+
+            <div class="ticket-desc-container">
+              <label for="ticket-subject" style="font-size: 12.5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; display: block;">Ticket Title (Optional)</label>
+              <input type="text" id="ticket-subject" class="text-input-field" placeholder="Enter ticket title (optional)" style="margin-bottom: 14px;">
+              
+              <label for="ticket-desc" style="font-size: 12.5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; display: block;">Problem Description (Required) *</label>
+              <textarea id="ticket-desc" class="textarea-field" style="min-height: 140px;" placeholder="Paste or type the customer's problem description here..."></textarea>
+              
+              <div class="textarea-footer">
+                <span id="char-counter">0 characters</span>
+                <button class="btn-clear-link" id="btn-clear-input">Clear text</button>
+              </div>
+            </div>
+
+            <div class="step-nav-bar">
+              <button class="btn-wizard-secondary" id="btn-desc-back">← Back to Options</button>
+              <button class="btn-wizard-primary" id="btn-desc-continue">Continue to Review →</button>
+            </div>
+          </div>
+
+          <!-- Method 3: Conversation Pane -->
+          <div id="panel-conv" class="tab-panel" style="display: none;">
+            <div class="step-header-wrap" style="margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary);">Paste the Customer Conversation</h3>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Paste the multi-message support chat transcript or upload a conversation file.</p>
+            </div>
+
+            <div class="conv-tools-row">
+              <div id="conv-status-badge" class="conv-badge">Paste multi-message chat or upload transcript</div>
+              <div style="display: flex; gap: 6px;">
+                <label class="btn-fallback-action" for="conv-file-upload" style="cursor: pointer; margin: 0;">
+                  📁 Upload File
+                </label>
+                <input type="file" id="conv-file-upload" accept=".txt,.docx,.csv,.xlsx,.json" style="display: none;">
+                <button class="btn-clear-link" id="btn-clear-conv">Clear</button>
+              </div>
+            </div>
+            
+            <textarea id="conv-text-input" class="textarea-field" style="min-height: 150px;" placeholder="Paste full customer-support chat transcript here:
+Agent [10:14 AM]: Hello, how can I assist you today?
+Customer: I am locked out of my corporate account after typing wrong password..."></textarea>
+            
+            <div id="conv-preview-area" style="display: none;"></div>
+
+            <div class="step-nav-bar">
+              <button class="btn-wizard-secondary" id="btn-conv-back">← Back to Options</button>
+              <button class="btn-wizard-primary" id="btn-conv-continue">Continue to Review →</button>
+            </div>
+          </div>
+
+          <!-- Method 4: Guided Builder Pane -->
+          <div id="panel-guided" class="tab-panel" style="display: none;">
+            <div class="step-header-wrap" style="margin-bottom: 16px;">
+              <h3 style="font-size: 18px; font-weight: 700; color: var(--text-primary);">Guided Ticket Intake</h3>
+              <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Answer the questions step-by-step to construct a structured support ticket.</p>
+            </div>
+
+            <div class="guided-step-wrap">
+              <div class="guided-step-header">
+                <span id="guided-step-indicator">Step 1 of 4: Primary Category</span>
+                <button class="btn-clear-link" id="btn-reset-guided">Start over</button>
+              </div>
+
+              <!-- Guided Stage 1: Categories -->
+              <div id="guided-stage-cats" class="guided-stage">
+                <div class="guided-cat-grid" id="guided-cat-grid"></div>
+              </div>
+
+              <!-- Guided Stage 2: Subcategories -->
+              <div id="guided-stage-subcats" class="guided-stage" style="display: none;">
+                <div style="margin-bottom: 6px; font-weight: 600; font-size: 12px;" id="guided-subcat-heading">Select Specific Subcategory:</div>
+                <div class="guided-cat-grid" id="guided-subcat-grid"></div>
+              </div>
+
+              <!-- Guided Stage 3: Follow-Up Questions -->
+              <div id="guided-stage-questions" class="guided-stage" style="display: none;">
+                <div id="guided-questions-container"></div>
+                <div style="margin-top: 10px;">
+                  <input type="text" id="guided-ticket-id" class="text-input-field" placeholder="Ticket / Order ID (Optional, e.g. #1347, INC-1029)" style="width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 10px; margin-bottom: 8px;">
+                  <textarea id="guided-free-notes" class="textarea-field" style="min-height: 60px;" placeholder="Additional problem notes or description (Optional)..."></textarea>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                  <button class="btn-wizard-secondary" id="btn-guided-back-sub">← Back</button>
+                  <button class="btn-wizard-primary" id="btn-guided-assemble">Review Ticket Draft →</button>
+                </div>
+              </div>
+
+              <!-- Guided Stage 4: Review Assembled Ticket -->
+              <div id="guided-stage-review" class="guided-stage" style="display: none;">
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">
+                  <strong>Review &amp; Edit Draft Ticket:</strong> (You can edit anything below before analysis)
+                </div>
+                <textarea id="guided-assembled-text" class="guided-review-area" style="min-height: 120px;"></textarea>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                  <button class="btn-wizard-secondary" id="btn-guided-edit-back">← Edit Options</button>
+                  <button class="btn-wizard-primary" id="btn-guided-continue">Continue to Review →</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="step-nav-bar">
+              <button class="btn-wizard-secondary" id="btn-guided-back-main">← Back to Options</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           STEP 3 CONTAINER: Dedicated Review Screen
+           =================================================================== -->
+      <div id="step-container-3" class="step-container">
+        <div class="step-header-wrap">
+          <h2 class="step-main-title">Review Ticket Before Analysis</h2>
+          <p class="step-main-subtext">Verify the ticket details below. This exact content will be analyzed against your policy library.</p>
+        </div>
+
+        <div class="step3-review-box">
+          <div class="step3-review-header">
+            <span class="step3-source-tag" id="review-source-badge">📄 User-Provided Description</span>
+            <span id="review-ticket-id" class="utc-id-pill" style="display: none;">#0000</span>
+          </div>
+
+          <div class="step3-review-body">
+            <div class="step3-review-title" id="review-ticket-title">(Untitled Ticket)</div>
+            <div class="step3-review-desc" id="review-ticket-body">No description content provided.</div>
+          </div>
+
+          <div class="step3-review-footer">
+            <span id="review-metrics">0 characters · 0 words</span>
+            <span style="color: var(--brand); font-weight: 600;">✓ Ready for Analysis</span>
+          </div>
+        </div>
+
+        <div class="step-nav-bar">
+          <button class="btn-wizard-secondary" id="btn-review-back">← Back to Edit</button>
+          <button class="btn-wizard-primary" id="btn-review-analyze">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <span>Analyze Ticket →</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           STEP 4 CONTAINER: Analysis Results Screen
+           =================================================================== -->
+      <div id="step-container-4" class="step-container">
+        <div class="step-header-wrap">
+          <h2 class="step-main-title">Policy Analysis Results</h2>
+          <p class="step-main-subtext">Evidence-based policy recommendation processed 100% locally on your machine.</p>
+        </div>
+
+        <div id="analyze-spinner" class="analyze-spinner" style="display: none; padding: 28px; text-align: center;">
+          <div style="font-size: 15px; font-weight: 600; color: var(--brand); margin-bottom: 6px;">
+            Analyzing ticket against policy library...
+          </div>
+          <div style="font-size: 13px; color: var(--text-secondary);">
+            Calibrated deterministic matching &amp; TF-IDF similarity verification in progress.
+          </div>
+        </div>
+
+        <div id="result-card" class="result-box" style="display: none;"></div>
+      </div>
+
+    </section>
+
+    <!-- VIEW 2: POLICY LIBRARY MANAGEMENT -->
+    <section id="view-library" class="view-panel">
+      <div class="view-header-row">
+        <div>
+          <h1 class="view-page-title">Policy Library</h1>
+          <p class="view-page-subtitle">Manage company policy documents stored locally in your browser's IndexedDB.</p>
+        </div>
+        <button class="btn-secondary" id="btn-back-home-lib">← Back to Dashboard</button>
+      </div>
+
+      <div class="dash-card" style="margin-bottom: 20px;">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Upload Policy Documents</span>
+          <span class="status-pill-neutral">Total: <strong id="library-policy-count">0 policies</strong></span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+          Documents are processed in-memory on this device and never uploaded to any server. Multi-table Word documents (.docx), spreadsheets (.xlsx), CSV/TSV tables, and text files (.txt) are automatically categorized into searchable sections.
+        </p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <label class="btn-choose-files" for="file-input-library" style="margin: 0; padding: 9px 20px;">
+            Add Documents (.pdf, .docx, .xlsx, .csv, .txt)
+          </label>
+          <input type="file" id="file-input-library" multiple accept=".pdf,.docx,.xlsx,.csv,.tsv,.txt,.json" style="display:none;">
+          <button class="btn-danger-outline" id="btn-clear-policies">Clear Stored Policies</button>
+        </div>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Indexed Documents</span>
+        </div>
+        <div class="table-responsive">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Document Name</th>
+                <th>Format</th>
+                <th>Sections</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="doc-table-body">
+              <tr>
+                <td colspan="5" class="table-empty-row">Loading indexed documents...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: RECENT ACTIVITY VIEW -->
+    <section id="view-activity" class="view-panel">
+      <div class="view-header-row">
+        <div>
+          <h1 class="view-page-title">Recent Activity</h1>
+          <p class="view-page-subtitle">Review previous policy analyses performed on this device.</p>
+        </div>
+        <button class="btn-secondary" id="btn-back-home-act">← Back to Dashboard</button>
+      </div>
+
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Local Analysis History</span>
+          <button class="btn-danger-outline" id="btn-clear-history">Clear History</button>
+        </div>
+        <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 14px;">
+          Analysis history is stored in local browser IndexedDB.
+        </p>
+        <div class="table-responsive">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Ticket Summary</th>
+                <th>Identified Policy</th>
+                <th>Outcome</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              <tr>
+                <td colspan="5" class="table-empty-row">Loading history...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SOURCE DOCUMENT VIEWER MODAL -->
+  <div id="source-viewer-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📄</span>
+          <div>
+            <h2 class="modal-title" id="svm-title">Source Document Viewer</h2>
+            <div class="modal-subtitle" id="svm-subtitle">Verified local document passage</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="svm-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" id="svm-body">
+        <div class="svm-meta-bar">
+          <div class="svm-meta-item">
+            <span class="svm-meta-label">Document:</span>
+            <strong id="svm-doc-name">policy.pdf</strong>
+          </div>
+          <div class="svm-meta-item">
+            <span class="svm-meta-label">Verified Location:</span>
+            <span class="status-pill-neutral" id="svm-location">Page 1</span>
+          </div>
+          <div class="svm-meta-item" id="svm-policy-id-wrap" style="display: none;">
+            <span class="svm-meta-label">Source Policy ID:</span>
+            <strong id="svm-policy-id">POL-01</strong>
+          </div>
+        </div>
+        <div class="svm-content-section">
+          <div class="svm-section-header">Exact Extracted Supporting Passage</div>
+          <div class="svm-passage-box" id="svm-passage"></div>
+        </div>
+        <div class="svm-context-section" id="svm-context-section" style="display: none;">
+          <div class="svm-section-header">Surrounding Document Context / Structured Record</div>
+          <div class="svm-context-box" id="svm-context"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span class="svm-provenance-note">🔒 Traceable to local document. Zero external servers.</span>
+        <button class="btn-secondary" id="svm-footer-close">Close Viewer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION DIALOG MODAL -->
+  <div id="confirm-modal" class="modal-backdrop" style="display: none; z-index: 1000;">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon" id="confirm-modal-icon">⚠️</span>
+          <div>
+            <h2 class="modal-title" id="confirm-modal-title">Please Confirm</h2>
+            <div class="modal-subtitle" id="confirm-modal-subtitle">Local data management</div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="confirm-modal-close" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px;">
+        <p id="confirm-modal-message" style="font-size: 14px; color: var(--text-primary); line-height: 1.5; margin-bottom: 8px;"></p>
+        <p style="font-size: 12px; color: var(--text-muted);">This action modifies data stored locally in your browser.</p>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn-wizard-secondary" id="confirm-modal-cancel">Cancel</button>
+        <button class="btn-wizard-primary" id="confirm-modal-ok" style="background-color: #B91C1C;">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>Policy Lookup</strong> — Local Policy Decision & Ticket Analysis Portal
+      </div>
+      <div>
+        100% Client-Side Engine &bull; Zero External AI APIs &bull; Local-First
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bundled Libraries and Scripts (Strictly local, Zero CDN) -->
+  <script src="lib/jszip.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/document-parser.js"></script>
+  <script src="js/tfidf.js"></script>
+  <script src="js/classifier.js"></script>
+  <script src="js/conversation-parser.js"></script>
+  <script src="js/ticket-model.js"></script>
+  <script src="js/guided-builder.js"></script>
+  <script src="js/ticket-retriever.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

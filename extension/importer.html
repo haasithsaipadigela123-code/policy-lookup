@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Importer - Word (.docx) to Extension</title>
+  <link rel="stylesheet" href="importer.css">
+</head>
+<body>
+  <div class="container">
+    <header class="app-header">
+      <h1 class="page-title">Import Policy Document</h1>
+    </header>
+
+    <main class="main-content">
+      <!-- File Upload Zone -->
+      <section class="upload-section">
+        <div id="drop-zone" class="drop-zone">
+          <input type="file" id="file-input" accept=".docx" class="file-input">
+          <h2 class="drop-title">Select or drop Word document (.docx)</h2>
+          <button id="btn-browse" class="btn-browse" type="button">Select File</button>
+        </div>
+      </section>
+
+      <!-- Extraction & Validation Results -->
+      <section id="results-section" class="results-section hidden">
+        
+        <!-- Summary Metric Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Tables Found</span>
+            <span class="metric-val" id="metric-tables">0</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Rows Examined</span>
+            <span class="metric-val" id="metric-rows">0</span>
+          </div>
+          <div class="metric-card highlight">
+            <span class="metric-label">Policies Extracted</span>
+            <span class="metric-val" id="metric-policies">0</span>
+          </div>
+          <div class="metric-card" id="status-card">
+            <span class="metric-label">Validation Status</span>
+            <span class="metric-val status-text" id="metric-status">Ready</span>
+          </div>
+        </div>
+
+        <!-- Validation & Integrity Report -->
+        <div class="report-box" id="report-box">
+          <h3 class="report-title">Data Integrity & Processing Report</h3>
+          <div id="report-items" class="report-items"></div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="action-bar">
+          <button id="btn-save-extension" class="btn-primary">Apply Policies to Extension</button>
+          <button id="btn-download-json" class="btn-secondary">Download policies.json</button>
+          <button id="btn-reset-default" class="btn-danger">Reset Extension to Defaults</button>
+        </div>
+
+        <!-- Action Feedback Notice -->
+        <div id="action-notice" class="action-notice hidden"></div>
+
+        <!-- Table Preview -->
+        <div class="preview-box">
+          <div class="preview-header">
+            <h3>Extracted Policy Records (<span id="preview-count">0</span>)</h3>
+            <input type="text" id="preview-filter" class="preview-filter" placeholder="Filter extracted policies...">
+          </div>
+          <div class="table-container">
+            <table class="policy-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Policy Name</th>
+                  <th>Conditions / Scope</th>
+                  <th>Exceptions</th>
+                  <th>Resolution</th>
+                  <th>Preserved Columns</th>
+                </tr>
+              </thead>
+              <tbody id="policy-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="lib/jszip.min.js"></script>
+  <script src="docx-table-parser.js"></script>
+  <script src="importer.js"></script>
+</body>
+</html>

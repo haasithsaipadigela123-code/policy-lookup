@@ -1,0 +1,55 @@
+SWIGGY CUSTOMER SUPPORT & DELIVERY OPERATIONS POLICY HANDBOOK
+
+================================================================================
+POLICY: Delivery Delay & Compensation Policy
+POLICY ID: SWIGGY-DEL-001
+CATEGORY: Delivery Operations
+DESCRIPTION: Compensation rules for orders exceeding Promised Delivery Time (PDT) by delivery riders.
+CONDITIONS: Order delivery is delayed by 30 minutes or more beyond Promised Delivery Time (PDT) due to rider assignment or transit delays.
+RESOLUTION: Issue an automatic INR 50 Swiggy Money compensation voucher and waive delivery fee. If delay exceeds 45 minutes, customer may request full cancellation with 100% refund.
+EXCEPTIONS: Delay caused by severe bad weather or rain surge where delivery warning was acknowledged by customer; customer address changes made after order dispatched; self-pickup orders.
+
+================================================================================
+POLICY: Missing Damaged or Incorrect Items Policy
+POLICY ID: SWIGGY-ITM-002
+CATEGORY: Food Quality & Order Accuracy
+DESCRIPTION: Resolution protocol for food orders with missing dishes, wrong items, or broken safety tamper tape.
+CONDITIONS: Customer reports missing items, wrong dishes delivered, or spilled/damaged containers with safety tamper seal broken, reported within 60 minutes of delivery timestamp with photo.
+RESOLUTION: Immediate 100% item-level refund to original payment source or instant Swiggy Money wallet credit plus 20% discount coupon on next order.
+EXCEPTIONS: Claims submitted more than 60 minutes after delivery require supervisor manual review and restaurant partner verification; missing complimentary cutlery or condiments are compensated with INR 20 voucher only.
+
+================================================================================
+POLICY: Order Cancellation & Kitchen Preparation Policy
+POLICY ID: SWIGGY-CAN-003
+CATEGORY: Order Management
+DESCRIPTION: Policy governing order cancellations and applicable charges before and after food preparation.
+CONDITIONS: Customer requests order cancellation after placing food order.
+RESOLUTION: Full 100% refund if cancellation is requested within 60 seconds of placement or before restaurant confirms order. Once kitchen begins preparation, a 100% cancellation charge applies to cover restaurant food preparation costs.
+EXCEPTIONS: If restaurant has delayed food preparation by more than 30 minutes past the estimated preparation time, cancellation fee is 100% waived.
+
+================================================================================
+POLICY: Payment Double Debit & UPI Settlement Policy
+POLICY ID: SWIGGY-PAY-004
+CATEGORY: Payments & Billing
+DESCRIPTION: Handling duplicate debits and payment deductions for failed or pending orders.
+CONDITIONS: Customer bank account, credit card, or UPI application debited multiple times for a single order ID, or payment deducted for an order marked as failed.
+RESOLUTION: Automatic reconciliation initiated within 2 hours. Refund settled back to source bank account within 3 to 5 business days. If customer provides 12-digit bank UTR or transaction reference number, manual verification by payment gateway desk within 4 hours.
+EXCEPTIONS: Digital wallets (Paytm, Mobikwik) reflect instant credit; third-party bank aggregator network downtime requires up to 7 business days SLA.
+
+================================================================================
+POLICY: Account Security & OTP Verification Policy
+POLICY ID: SWIGGY-SEC-005
+CATEGORY: Customer Account Security
+DESCRIPTION: Protocols for suspicious logins, unauthorized address changes, and credential lockouts.
+CONDITIONS: Customer reports unauthorized login, suspicious delivery address changes on new devices, or multiple failed OTP attempts.
+RESOLUTION: Temporarily lock customer account session, invalidate all active mobile tokens, and prompt secure biometric or SMS verification to registered phone number.
+EXCEPTIONS: Corporate Swiggy for Business accounts must have IT administrator email approval for unlock.
+
+================================================================================
+POLICY: Swiggy One VIP Membership Delivery Benefits Policy
+POLICY ID: SWIGGY-VIP-006
+CATEGORY: Subscriptions & Loyalty
+DESCRIPTION: Free delivery thresholds and subscription perks for Swiggy One members.
+CONDITIONS: Active Swiggy One membership holder placing food orders above INR 149 within a 10 km restaurant radius.
+RESOLUTION: Apply 100% delivery fee waiver (free delivery) and up to 30% extra partner discounts on eligible restaurants.
+EXCEPTIONS: Instamart quick-commerce orders below INR 199 require standard handling fees; heavy rain surge fee exceptions apply during municipal red alert weather emergencies.
