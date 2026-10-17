@@ -792,6 +792,17 @@ const TicketRetriever = (function () {
         }
 
         if (res.ok) {
+          const contentType = res.headers.get('content-type') || '';
+          if (!contentType.includes('application/json')) {
+            return {
+              attempted: true,
+              success: false,
+              classification: 'ENDPOINT_HTML_FALLBACK',
+              failureReason: 'ENDPOINT_HTML_FALLBACK',
+              error: 'Backend retrieval endpoint returned non-JSON response.',
+              suggestion: 'You can switch to Description, Conversation, or Guided intake below to proceed.'
+            };
+          }
           const data = await res.json();
           return {
             attempted: true,
@@ -803,7 +814,8 @@ const TicketRetriever = (function () {
             success: false,
             classification: 'HTTP_ERROR',
             statusCode: res.status,
-            error: `Local backend returned HTTP ${res.status}`
+            error: `Backend returned HTTP ${res.status}`,
+            suggestion: 'You can switch to Description, Conversation, or Guided intake below to proceed.'
           };
         }
       } catch (err) {
@@ -813,8 +825,8 @@ const TicketRetriever = (function () {
           serverOffline: true,
           classification: 'SERVER_OFFLINE',
           failureReason: 'SERVER_OFFLINE',
-          error: 'Local Node.js backend server is not reachable on localhost:3000.',
-          suggestion: 'Please verify that the local server is running (npm start) or enter ticket details manually.'
+          error: 'Backend retrieval endpoint is not reachable.',
+          suggestion: 'You can switch to Description, Conversation, or Guided intake below to proceed.'
         };
       }
     },

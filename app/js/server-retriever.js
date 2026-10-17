@@ -29,7 +29,7 @@ const url = require('url');
 
 const MAX_REDIRECTS = 5;
 const MAX_RESPONSE_BYTES = 2 * 1024 * 1024; // 2MB
-const REQUEST_TIMEOUT_MS = 6000; // 6 seconds
+const REQUEST_TIMEOUT_MS = 12000; // 12 seconds
 const MAX_CONCURRENT_FETCHES = 5;
 
 let activeFetchCount = 0;

@@ -42,10 +42,14 @@ const TicketModel = (function () {
 
     // Compute missing information list
     const missingInfo = [];
-    if (!title && !ticketId) {
+    const trimmedTitle = (typeof title === 'string' ? title.trim() : '');
+    const trimmedDesc = (typeof description === 'string' ? description.trim() : '');
+    const hasConvText = Boolean(conversation && typeof conversation.rawText === 'string' && conversation.rawText.trim().length > 0);
+
+    if (!trimmedTitle && !ticketId) {
       missingInfo.push('Ticket Subject / Identifier not provided');
     }
-    if (!description && (!conversation || !conversation.rawText)) {
+    if (!trimmedDesc && !hasConvText) {
       missingInfo.push('Detailed problem description not provided');
     }
 
@@ -63,6 +67,13 @@ const TicketModel = (function () {
       missingInformation: missingInfo,
       provenance,
       rawEvidence,
+
+      /**
+       * Returns true only when a valid, non-empty problem description or conversation exists
+       */
+      isReadyForAnalysis() {
+        return Boolean(trimmedDesc.length > 0 || hasConvText);
+      },
 
       /**
        * Returns a single consolidated search text for policy vectorization & signal extraction
@@ -145,7 +156,8 @@ const TicketModel = (function () {
   }
 
   return {
-    createNormalizedTicket
+    createNormalizedTicket,
+    isReadyForAnalysis: (ticket) => Boolean(ticket && typeof ticket.isReadyForAnalysis === 'function' ? ticket.isReadyForAnalysis() : (ticket && ticket.description && ticket.description.trim().length > 0))
   };
 })();
 

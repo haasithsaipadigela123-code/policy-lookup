@@ -137,9 +137,11 @@
   // Step 3 Review elements
   const reviewSourceBadge = document.getElementById('review-source-badge');
   const reviewTicketId = document.getElementById('review-ticket-id');
+  const reviewCleanedBadge = document.getElementById('review-cleaned-badge');
   const reviewTicketTitle = document.getElementById('review-ticket-title');
   const reviewTicketBody = document.getElementById('review-ticket-body');
   const reviewMetrics = document.getElementById('review-metrics');
+  const reviewReadyBadge = document.getElementById('review-ready-badge');
   const btnReviewBack = document.getElementById('btn-review-back');
   const btnReviewAnalyze = document.getElementById('btn-review-analyze');
 
@@ -385,6 +387,7 @@
   if (btnStep1Continue) {
     btnStep1Continue.addEventListener('click', () => {
       goToStep(2);
+      showMethodSelector();
     });
   }
 
@@ -554,11 +557,22 @@
   // Step 3 Review & Validation
   function prepareTicketForReview() {
     if (currentActiveTab === 'desc') {
-      const desc = ticketDescInput ? ticketDescInput.value.trim() : '';
-      if (!desc) {
+      const rawDesc = ticketDescInput ? ticketDescInput.value.trim() : '';
+      if (!rawDesc) {
         alert('Please enter a problem description.');
         if (ticketDescInput) ticketDescInput.focus();
         return false;
+      }
+      let desc = rawDesc;
+      let wasCleaned = false;
+      let artifactsRemoved = [];
+      if (typeof TextCleaner !== 'undefined') {
+        const cleanRes = TextCleaner.cleanCopiedText(rawDesc);
+        if (cleanRes.cleanedText) {
+          desc = cleanRes.cleanedText;
+          wasCleaned = cleanRes.changed;
+          artifactsRemoved = cleanRes.removedArtifacts;
+        }
       }
       const title = ticketSubjectInput ? ticketSubjectInput.value.trim() : '';
       currentTicket = (typeof TicketModel !== 'undefined')
@@ -570,13 +584,26 @@
             provenance: { title: 'user_input', description: 'user_input' }
           })
         : { title: title || 'Customer Problem Description', description: desc, source: 'manual_description' };
+      currentTicket.wasCleaned = wasCleaned;
+      currentTicket.cleanedArtifacts = artifactsRemoved;
       return true;
     } else if (currentActiveTab === 'conv') {
-      const text = convTextInput ? convTextInput.value.trim() : '';
-      if (!text) {
+      const rawText = convTextInput ? convTextInput.value.trim() : '';
+      if (!rawText) {
         alert('Please paste or upload a customer conversation.');
         if (convTextInput) convTextInput.focus();
         return false;
+      }
+      let text = rawText;
+      let wasCleaned = false;
+      let artifactsRemoved = [];
+      if (typeof TextCleaner !== 'undefined') {
+        const cleanRes = TextCleaner.cleanCopiedText(rawText);
+        if (cleanRes.cleanedText) {
+          text = cleanRes.cleanedText;
+          wasCleaned = cleanRes.changed;
+          artifactsRemoved = cleanRes.removedArtifacts;
+        }
       }
       const parsedConv = (typeof ConversationParser !== 'undefined')
         ? ConversationParser.parseConversation(text)
@@ -594,6 +621,8 @@
             retrievalStatus: { status: 'MANUAL', platform: 'conversation' }
           })
         : { title: inferredId ? `Conversation Ticket #${inferredId}` : 'Support Conversation', description: text, source: 'conversation_paste' };
+      currentTicket.wasCleaned = wasCleaned;
+      currentTicket.cleanedArtifacts = artifactsRemoved;
       return true;
     } else if (currentActiveTab === 'link') {
       if (!lastRetrievedTicket) {
@@ -643,8 +672,20 @@
   }
 
   function renderStep3Review() {
-    if (!currentTicket) return;
+    if (!currentTicket) {
+      if (reviewSourceBadge) reviewSourceBadge.textContent = '📄 Support Ticket';
+      if (reviewTicketTitle) reviewTicketTitle.textContent = '';
+      if (reviewTicketBody) reviewTicketBody.textContent = 'No ticket description provided.';
+      if (reviewMetrics) reviewMetrics.textContent = '0 characters · 0 words';
+      if (reviewReadyBadge) {
+        reviewReadyBadge.textContent = '⚠️ Ticket Description Required';
+        reviewReadyBadge.style.color = '#B91C1C';
+      }
+      if (btnReviewAnalyze) btnReviewAnalyze.disabled = true;
+      return;
+    }
 
+    const desc = (currentTicket.description || '').trim();
     const sourceLabels = {
       manual_description: '📄 User-Provided Description',
       conversation_paste: '💬 User-Provided Conversation',
@@ -667,12 +708,35 @@
       reviewTicketTitle.textContent = currentTicket.title || '(Untitled Ticket)';
     }
     if (reviewTicketBody) {
-      reviewTicketBody.textContent = currentTicket.description || '(No description provided)';
+      reviewTicketBody.textContent = desc || '(No description provided)';
     }
     if (reviewMetrics) {
-      const chars = (currentTicket.description || '').length;
-      const words = ((currentTicket.description || '').match(/\S+/g) || []).length;
+      const chars = desc.length;
+      const words = (desc.match(/\S+/g) || []).length;
       reviewMetrics.textContent = `${chars} characters · ${words} words`;
+    }
+    if (reviewReadyBadge) {
+      if (desc.length > 0) {
+        reviewReadyBadge.textContent = '✓ Ready for Analysis';
+        reviewReadyBadge.style.color = 'var(--brand)';
+      } else {
+        reviewReadyBadge.textContent = '⚠️ Ticket Description Required';
+        reviewReadyBadge.style.color = '#B91C1C';
+      }
+    }
+    if (reviewCleanedBadge) {
+      if (currentTicket && currentTicket.wasCleaned) {
+        reviewCleanedBadge.style.display = 'inline-block';
+        const cleanedStr = (currentTicket.cleanedArtifacts && currentTicket.cleanedArtifacts.length > 0)
+          ? `✨ Background Filter: ${currentTicket.cleanedArtifacts.join(', ')} cleaned`
+          : '✨ Background Filter: Noise & signatures cleaned';
+        reviewCleanedBadge.textContent = cleanedStr;
+      } else {
+        reviewCleanedBadge.style.display = 'none';
+      }
+    }
+    if (btnReviewAnalyze) {
+      btnReviewAnalyze.disabled = (desc.length === 0);
     }
   }
 
@@ -730,6 +794,7 @@
       if (ticketUrlInput) ticketUrlInput.value = '';
       if (charCounter) charCounter.textContent = '0 characters';
       if (urlStatusMsg) urlStatusMsg.textContent = '';
+      if (descFilterNotice) descFilterNotice.style.display = 'none';
       lastRetrievedTicket = null;
       currentTicket = null;
       if (urlTicketCard) urlTicketCard.style.display = 'none';
@@ -1693,12 +1758,23 @@
           });
           if (apiRes.ok) {
             const mlData = await apiRes.json();
-            if (mlData && mlData.success && mlData.topMatch) {
-              if (mlData.topMatch.probability) {
-                result.topMatch.mlProbability = mlData.topMatch.probability;
-              }
+            if (mlData && mlData.success && result.topMatch) {
               if (mlData.engine) {
                 result.engineUsed = mlData.engine;
+              }
+              if (mlData.similarityScore !== undefined) {
+                result.similarityScore = mlData.similarityScore;
+              } else if (mlData.topMatch && mlData.topMatch.similarity !== undefined) {
+                result.similarityScore = mlData.topMatch.similarity;
+              }
+              if (mlData.topMatch && mlData.topMatch.mlProbability !== undefined && mlData.topMatch.mlProbability !== null) {
+                result.topMatch.mlProbability = mlData.topMatch.mlProbability;
+              } else if (mlData.supervisedClassifier && mlData.supervisedClassifier.isTrained) {
+                const pid = result.topMatch.id || result.topMatch.internalReference;
+                const prob = mlData.supervisedClassifier.probabilities ? mlData.supervisedClassifier.probabilities[pid] : null;
+                if (prob !== undefined) {
+                  result.topMatch.mlProbability = prob;
+                }
               }
             }
           }
@@ -1954,8 +2030,18 @@
         if (ticketSubjectInput) ticketSubjectInput.value = '';
         if (ticketDescInput) ticketDescInput.value = '';
         if (charCounter) charCounter.textContent = '0 characters';
+        if (ticketUrlInput) ticketUrlInput.value = '';
+        if (convTextInput) convTextInput.value = '';
+        if (guidedAssembledText) guidedAssembledText.value = '';
+        if (guidedTicketId) guidedTicketId.value = '';
+        if (guidedFreeNotes) guidedFreeNotes.value = '';
+        if (typeof GuidedTicketBuilder !== 'undefined') GuidedTicketBuilder.resetState();
+        if (convStatusBadge) updateConversationStatus();
         currentTicket = null;
         lastRetrievedTicket = null;
+        if (urlTicketCard) urlTicketCard.style.display = 'none';
+        if (urlFallbackCard) urlFallbackCard.style.display = 'none';
+        if (urlKbCard) urlKbCard.style.display = 'none';
         if (resultCard) resultCard.style.display = 'none';
         goToStep(2);
         showMethodSelector();
@@ -2225,8 +2311,18 @@ ${top.evidence}`;
         if (ticketSubjectInput) ticketSubjectInput.value = '';
         if (ticketDescInput) ticketDescInput.value = '';
         if (charCounter) charCounter.textContent = '0 characters';
+        if (ticketUrlInput) ticketUrlInput.value = '';
+        if (convTextInput) convTextInput.value = '';
+        if (guidedAssembledText) guidedAssembledText.value = '';
+        if (guidedTicketId) guidedTicketId.value = '';
+        if (guidedFreeNotes) guidedFreeNotes.value = '';
+        if (typeof GuidedTicketBuilder !== 'undefined') GuidedTicketBuilder.resetState();
+        if (convStatusBadge) updateConversationStatus();
         currentTicket = null;
         lastRetrievedTicket = null;
+        if (urlTicketCard) urlTicketCard.style.display = 'none';
+        if (urlFallbackCard) urlFallbackCard.style.display = 'none';
+        if (urlKbCard) urlKbCard.style.display = 'none';
         if (resultCard) resultCard.style.display = 'none';
         goToStep(2);
         showMethodSelector();

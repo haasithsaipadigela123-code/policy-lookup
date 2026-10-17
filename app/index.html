@@ -244,8 +244,8 @@
                     <span class="utc-provenance-tag">Verified Platform Extraction</span>
                   </div>
                 </div>
-                <div class="utc-title-heading" id="utc-title">Ticket Title</div>
-                <div class="utc-description-content" id="utc-description">Clean ticket body content...</div>
+                <div class="utc-title-heading" id="utc-title"></div>
+                <div class="utc-description-content" id="utc-description"></div>
               </div>
 
               <div class="url-ticket-footer-bar">
@@ -276,8 +276,8 @@
                     ℹ️ <strong>Status: PAGE_RETRIEVED</strong> · Public help article / documentation extracted from remote site.
                   </span>
                 </div>
-                <div class="utc-title-heading" id="kb-title" style="color: var(--brand); font-size: 15px; margin-bottom: 6px;">Article Title</div>
-                <div class="utc-description-content" id="kb-content" style="max-height: 160px; overflow-y: auto; background: var(--surface-alt); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); line-height: 1.5; font-size: 13px;">Article body text...</div>
+                <div class="utc-title-heading" id="kb-title" style="color: var(--brand); font-size: 15px; margin-bottom: 6px;"></div>
+                <div class="utc-description-content" id="kb-content" style="max-height: 160px; overflow-y: auto; background: var(--surface-alt); padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); line-height: 1.5; font-size: 13px;"></div>
               </div>
 
               <div class="url-ticket-footer-bar">
@@ -356,7 +356,7 @@
 
             <div class="conv-tools-row">
               <div id="conv-status-badge" class="conv-badge">Paste multi-message chat or upload transcript</div>
-              <div style="display: flex; gap: 6px;">
+              <div style="display: flex; gap: 6px; align-items: center;">
                 <label class="btn-fallback-action" for="conv-file-upload" style="cursor: pointer; margin: 0;">
                   📁 Upload File
                 </label>
@@ -447,18 +447,21 @@ Customer: I am locked out of my corporate account after typing wrong password...
 
         <div class="step3-review-box">
           <div class="step3-review-header">
-            <span class="step3-source-tag" id="review-source-badge">📄 User-Provided Description</span>
-            <span id="review-ticket-id" class="utc-id-pill" style="display: none;">#0000</span>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <span class="step3-source-tag" id="review-source-badge">📄 User-Provided Description</span>
+              <span id="review-ticket-id" class="utc-id-pill" style="display: none;">#0000</span>
+              <span id="review-cleaned-badge" class="status-pill-neutral" style="display: none; font-size: 11px; color: var(--brand); background: rgba(45, 106, 79, 0.08); border-color: rgba(45, 106, 79, 0.2);">✨ Background Filter: Noise &amp; signatures cleaned</span>
+            </div>
           </div>
 
           <div class="step3-review-body">
-            <div class="step3-review-title" id="review-ticket-title">(Untitled Ticket)</div>
-            <div class="step3-review-desc" id="review-ticket-body">No description content provided.</div>
+            <div class="step3-review-title" id="review-ticket-title"></div>
+            <div class="step3-review-desc" id="review-ticket-body"></div>
           </div>
 
           <div class="step3-review-footer">
             <span id="review-metrics">0 characters · 0 words</span>
-            <span style="color: var(--brand); font-weight: 600;">✓ Ready for Analysis</span>
+            <span id="review-ready-badge" style="color: var(--brand); font-weight: 600;">✓ Ready for Analysis</span>
           </div>
         </div>
 
@@ -676,6 +679,7 @@ Customer: I am locked out of my corporate account after typing wrong password...
   <script src="js/document-parser.js"></script>
   <script src="js/tfidf.js"></script>
   <script src="js/classifier.js"></script>
+  <script src="js/cleaner.js"></script>
   <script src="js/conversation-parser.js"></script>
   <script src="js/ticket-model.js"></script>
   <script src="js/guided-builder.js"></script>

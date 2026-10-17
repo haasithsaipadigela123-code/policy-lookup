@@ -164,7 +164,8 @@ const PolicyEngine = (function () {
       return {
         matched: false,
         status: 'NO_POLICY_FOUND',
-        reason: 'Ticket title and description are empty.'
+        reason: 'Ticket title and description are empty.',
+        topMatch: null
       };
     }
 
@@ -214,9 +215,9 @@ const PolicyEngine = (function () {
     let tfidfResults = [];
     if (typeof TfIdfEngine !== 'undefined') {
       const index = new TfIdfEngine.TfIdfIndex();
-      policies.forEach(p => {
-        const pid = p.internalReference || p.id || p.policyId;
-        if (!pid) return;
+      policies.forEach((p, idx) => {
+        const pid = p.internalReference || p.id || p.policyId || `POLICY_ITEM_${idx}`;
+        if (!p || !pid) return;
         const docText = `${p.name || p.title || ''} ${p.category || ''} ${p.conditions || ''} ${p.exceptions || ''} ${p.resolution || ''} ${(p.keywords || []).join(' ')} ${p.mainText || ''}`;
         index.addDocument(pid, docText, p);
       });
@@ -234,8 +235,9 @@ const PolicyEngine = (function () {
 
     const scored = [];
 
-    for (const p of policies) {
-      const pid = p.internalReference || p.id || p.policyId;
+    for (let pIdx = 0; pIdx < policies.length; pIdx++) {
+      const p = policies[pIdx];
+      const pid = p.internalReference || p.id || p.policyId || `POLICY_ITEM_${pIdx}`;
       if (!p || !pid) continue;
 
       const keywords = Array.isArray(p.keywords) ? p.keywords : [];
@@ -369,7 +371,8 @@ const PolicyEngine = (function () {
         status: 'NO_POLICY_FOUND',
         reason: scored.length === 0
           ? 'No matching policies or relevant conditions identified from uploaded documents.'
-          : `Highest candidate confidence (${scored[0].score}) is below certainty threshold (${CERTAINTY_THRESHOLD}).`
+          : `Highest candidate confidence (${scored[0].score}) is below certainty threshold (${CERTAINTY_THRESHOLD}).`,
+        topMatch: null
       };
     }
 
